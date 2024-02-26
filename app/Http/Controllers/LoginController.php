@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,10 @@ class loginController extends Controller
         $password = $request->input('password');
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $user = User::where('email', $email)->first();
-            $response = Http::asForm()->post('http://127.0.0.1:8000/oauth/token', [
+            $response = Http::asForm()->post(env('APP_URL').'oauth/token', [
                 'grant_type' => 'password',
-                'client_id' => '3',
-                'client_secret' => 'Oa8jSPfUrWnzS4MGXlovD8d2nxOQbn6n7p04q9Jn',
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET'),
                 'username' => $email,
                 'password' => $password,
                 'scope' => '',
